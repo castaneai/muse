@@ -59,7 +59,3 @@ class MuseDB:
     def _copy_picture(self, music_id, picture_bytes):
         with open('{0}/{1}'.format(self.PICTURE_DIR, music_id), 'wb') as stream:
             stream.write(picture_bytes)
-
-if __name__ == '__main__':
-    with MuseDB('../data/musics.sqlite') as db:
-        db.add('../database.m4a')
