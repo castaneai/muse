@@ -1,13 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="muse">
 <head>
     <title>Muse</title>
-    <link rel="stylesheet" href="styles/test.css"/>
 </head>
-<body>
-Hello!, <span id="name"></span>!
+<body ng-controller="MainCtrl">
+<div class="container">
+    <header>
+        <h1>Muse</h1>
+        <audio ng-src="/musics/{{ currentMusicId }}" />
+    </header>
+
+    <section>
+        <input type="text" placeholder="Search musics..." />
+    </section>
+
+    <section>
+        <ul>
+            <li ng-repeat="music in musics">
+                <img ng-src="/pictures/{{ music.id }}" alt="{{ music.title }}" />
+            </li>
+        </ul>
+    </section>
+</div>
 
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
 <script src="scripts/muse.js"></script>
 </body>
 </html>

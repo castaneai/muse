@@ -28,6 +28,14 @@ def get_musics():
     with muse.MuseDB(DB_PATH) as db:
         return json.dumps(db.search())
 
+
+@app.get('/pictures/<music_id>')
+def get_images(music_id):
+    url = '{0}.jpg'.format(music_id)
+    return bottle.static_file(url, root='../data/pictures')
+
+
+
 @app.get('/<filepath:path>')
 def static(filepath):
     return bottle.static_file(filepath, root='../public')

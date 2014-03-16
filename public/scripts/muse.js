@@ -43,3 +43,10 @@ $(document).ready(function() {
         }
     });
 });
+
+var muse = angular.module('muse', ['ngResource']);
+
+muse.controller('MainCtrl', function($scope, $resource) {
+    var Musics = $resource('/musics');
+    $scope.musics = Musics.query();
+});
