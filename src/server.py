@@ -15,7 +15,7 @@ def upload_musics():
     if ext not in ('.mp3', '.m4a'):
         return 'File ext not allowed.'
 
-    save_path = u'../.tmp/{0}'.format(upload.filename)
+    save_path = u'../.tmp/{0}{1}'.format(upload.filename, ext)
     upload.save(save_path)
     with muse.MuseDB(DB_PATH) as db:
         db.add(save_path)

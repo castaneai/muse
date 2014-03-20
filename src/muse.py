@@ -37,7 +37,7 @@ class MuseDB:
 
     def init(self):
         self._conn.execute(
-            u'create table musics (id integer primary key autoincrement, title string not null, artist string not null)'
+            u'create table musics (id integer primary key autoincrement, title string not null, artist string not null, extension string not null)'
         )
 
     def search(self):
