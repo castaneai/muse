@@ -2,12 +2,17 @@
 <html ng-app="muse">
 <head>
     <title>Muse</title>
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/muse.css">
+    <link rel="stylesheet" href="styles/flaticon.css">
 </head>
 <body ng-controller="MainCtrl">
+
+<!-- container -->
 <div class="container">
+    
     <header>
         <h1>Muse</h1>
-        <audio ng-src="/musics/{{ currentMusicId }}" />
     </header>
 
     <section>
@@ -15,15 +20,26 @@
     </section>
 
     <section>
-        <ul>
-            <li ng-repeat="music in musics">
-                <img ng-src="/pictures/{{ music.id }}" alt="{{ music.title }}" />
+        <ul id="music-list">
+            <li ng-repeat="music in musics"
+                ng-click="play(music.id)"
+                ng-mouseover="canPlay[music.id] = true"
+                ng-mouseout="canPlay[music.id] = false"
+                style="background-image: url(./pictures/{{ music.id }}.jpg)">
+                <div class="cover"
+                     ng-show="canPlay[music.id]">
+                     <i class="flaticon-play2"></i>
+                </div>
+                <div class="cover"
+                     ng-show="isPlaying(music.id)">
+                     <i class="flaticon-two4"></i>
+                </div>
             </li>
         </ul>
     </section>
+    
 </div>
 
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-resource/angular-resource.min.js"></script>
 <script src="scripts/muse.js"></script>

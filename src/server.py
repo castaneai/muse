@@ -35,7 +35,6 @@ def get_images(music_id):
     return bottle.static_file(url, root='../data/pictures')
 
 
-
 @app.get('/<filepath:path>')
 def static(filepath):
     return bottle.static_file(filepath, root='../public')

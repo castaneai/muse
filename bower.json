@@ -16,7 +16,6 @@
   ],
   "dependencies": {
     "angular-resource": "~1.2.14",
-    "angular": "~1.2.14",
-    "jquery": "~2.1.0"
+    "angular": "~1.2.14"
   }
 }

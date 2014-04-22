@@ -1,3 +1,4 @@
+/*
 function sendFile(file) {
     var formData = new FormData();
     formData.append('upload', file);
@@ -43,10 +44,55 @@ $(document).ready(function() {
         }
     });
 });
+*/
 
+// $resourceを使うためにはngResourceが必要
 var muse = angular.module('muse', ['ngResource']);
 
-muse.controller('MainCtrl', function($scope, $resource) {
-    var Musics = $resource('/musics');
-    $scope.musics = Musics.query();
+muse.service('AudioPlayer', function() {
+    var audio = null;
+    var currentMusicId = -1;
+    
+    this.play = function(musicId) {
+        if (musicId === currentMusicId) {
+            if (audio.paused) {
+                audio.play();
+            }
+            else {
+                audio.pause();
+            }
+        }
+        else {
+            if (audio !== null) {
+                audio.pause();
+            }
+            audio = new Audio('./musics/' + musicId);
+            audio.play();
+            currentMusicId = musicId;
+        }
+    };
+});
+
+muse.controller('MainCtrl', function($scope, $resource, AudioPlayer) {
+    
+    var MusicAPI = $resource('/musics');
+    
+    // query()はjson配列形式のデータを取り出す
+    //$scope.musics = MusicAPI.query();
+    $scope.musics = [
+        {
+            id: 1,
+            title: "database"
+        },
+        {
+            id: 2,
+            title: "Born to be"
+        }
+    ];
+    
+    $scope.canPlay = {};
+    
+    $scope.play = function(musicId) {
+        AudioPlayer.play(musicId);
+    };
 });
