@@ -17,22 +17,6 @@
     <section>
         <ul id="music-list">
             <li class="muse-item" ng-repeat="music in musics"></li>
-            <!--
-            <li ng-repeat="music in musics"
-                ng-click="play(music.id)"
-                ng-mouseover="canPlay[music.id] = true"
-                ng-mouseout="canPlay[music.id] = false"
-                style="background-image: url(./pictures/{{ music.id }}.jpg)">
-                <div class="cover"
-                     ng-show="canPlay[music.id]">
-                     <i class="flaticon-play2"></i>
-                </div>
-                <div class="cover"
-                     ng-show="isPlaying(music.id)">
-                     <i class="flaticon-two4"></i>
-                </div>
-            </li>
-            -->
         </ul>
     </section>
     
@@ -45,6 +29,7 @@
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="scripts/audio-player.js"></script>
 <script src="scripts/muse.js"></script>
 </body>
 </html>
