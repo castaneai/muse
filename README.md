@@ -10,3 +10,17 @@ Python 2.6以上（Python 3はmutagenwrapperが非対応）
 - node.js
 - bottle (pip)
 - mutagenwrapper (pip)
+
+初期化設定
+------------
+
+```
+bower install
+```
+
+起動方法
+-----------
+
+```
+python src/server.py
+```

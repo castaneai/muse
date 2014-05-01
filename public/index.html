@@ -12,15 +12,12 @@
 <div class="container">
     
     <header>
-        <h1>Muse</h1>
     </header>
 
     <section>
-        <input type="text" placeholder="Search musics..." />
-    </section>
-
-    <section>
         <ul id="music-list">
+            <li class="muse-item" ng-repeat="music in musics"></li>
+            <!--
             <li ng-repeat="music in musics"
                 ng-click="play(music.id)"
                 ng-mouseover="canPlay[music.id] = true"
@@ -35,11 +32,17 @@
                      <i class="flaticon-two4"></i>
                 </div>
             </li>
+            -->
         </ul>
     </section>
     
+    <footer>
+    </footer>
+    
 </div>
 
+<script src="bower_components/buzz/dist/buzz.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-resource/angular-resource.min.js"></script>
 <script src="scripts/muse.js"></script>

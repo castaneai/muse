@@ -1,12 +1,12 @@
 body {
-    background-color: #fefefe;
+    background-color: #efefef;
     font-family: 'Lucida Grande',
         'Hiragino Kaku Gothic ProN',
         'Meiryo',
         sans-serif;
 }
 
-#music-list li {
+.muse-item {
     margin: 1em;
     display: inline-block;
     border: 1px solid #ddd;
@@ -24,7 +24,9 @@ body {
     cursor: pointer;
 }
 
-.cover {
+.muse-item .cover {
+    display: none;
+    
     background: rgba(255,255,255,0.5);
     position: absolute;
     width: 100%;
