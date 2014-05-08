@@ -1,5 +1,5 @@
 {
-  "name": "muse-server",
+  "name": "muse",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
@@ -9,13 +9,15 @@
   "author": "castaneai",
   "license": "MIT",
   "devDependencies": {
-    "gulp": "^3.5.5",
-    "gulp-util": "^2.2.14",
-    "gulp-connect": "^1.0.7",
-    "gulp-less": "^1.2.2",
-    "gulp-watch": "^0.5.2"
+    "power-assert": "^0.6.1",
+    "gulp": "^3.6.2",
+    "mocha": "^1.18.2",
+    "gulp-mocha": "^0.4.1"
   },
   "dependencies": {
-    "bower": "^1.2.8"
+    "bower": "^1.2.8",
+    "musicmetadata": "^0.3.9",
+    "sqlite3": "^2.2.3",
+    "express": "^4.1.1"
   }
 }

@@ -58,12 +58,12 @@ class AudioFile:
         raise NotImplementedError()
 
     @property
-    def cover_format(self):
+    def cover_mime(self):
         raise NotImplementedError()
 
     @property
-    def ext(self):
-        raise NotImplementedError()
+    def audio_mime(self):
+        return self._audio.mime[0]
 
 
 class MP3Audio(AudioFile):
@@ -77,16 +77,12 @@ class MP3Audio(AudioFile):
             return None
 
     @property
-    def cover_format(self):
+    def cover_mime(self):
         tags = self._audio.tags
         if u'APIC:' in tags:
             return tags[u'APIC:'].mime
         else:
             return None
-
-    @property
-    def ext(self):
-        return '.mp3'
 
 
 class MP4Audio(AudioFile):
@@ -110,16 +106,12 @@ class MP4Audio(AudioFile):
             return None
 
     @property
-    def cover_format(self):
+    def cover_mime(self):
         tags = self._audio.tags
         if u'covr' in tags and len(tags[u'covr']) > 0:
             return MP4Audio._get_mime_from_mp4_imageformat(tags[u'covr'][0].imageformat)
         else:
             return None
-
-    @property
-    def ext(self):
-        return '.m4a'
 
 
 def read(audio_file):
@@ -135,8 +127,8 @@ def read(audio_file):
       album : アルバム名
       category : カテゴリー（タイアップアニメ名）
       cover : カバー画像のバイナリ
-      cover_format : カバー画像のmime type
-      ext : ファイルの拡張子
+      cover_mime : カバー画像のmime type
+      audio_mime : 音声ファイルのmime type
     }"""
     audio = AudioFile.create(audio_file)
 
@@ -146,8 +138,8 @@ def read(audio_file):
         'album': audio.album,
         'category': None,  # TODO: カテゴリは後に歌詞タイムからスクレイピングする予定
         'cover': audio.cover_data,
-        'cover_format': audio.cover_format,
-        'ext': audio.ext,
+        'cover_mime': audio.cover_mime,
+        'audio_mime': audio.audio_mime,
     }
 
 
@@ -161,12 +153,12 @@ if __name__ == '__main__':
     print(u'title: {0}'.format(info['title']))
     print(u'artist: {0}'.format(info['artist']))
     print(u'album: {0}'.format(info['album']))
-    print(u'ext: {0}'.format(info['ext']))
+    print(u'mime: {0}'.format(info['audio_mime']))
     if info['cover'] is not None:
-        print(u'cover_format: {0}'.format(info['cover_format']))
+        print(u'cover_mime: {0}'.format(info['cover_mime']))
         img_exts = {
             'image/jpeg': '.jpg',
             'image/png': '.png',
         }
-        with open(u'{0}{1}'.format(info['title'], img_exts[info['cover_format']]), 'wb') as f:
+        with open(u'{0}{1}'.format(info['title'], img_exts[info['cover_mime']]), 'wb') as f:
             f.write(info['cover'])

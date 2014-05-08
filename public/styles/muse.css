@@ -1,9 +1,14 @@
+html {
+    height: 100%;
+}
+
 body {
     background-color: #efefef;
     font-family: 'Lucida Grande',
         'Hiragino Kaku Gothic ProN',
         'Meiryo',
         sans-serif;
+    min-height: 100%;
 }
 
 .muse-item {
@@ -38,4 +43,8 @@ body {
 .cover i:before {
     font-size: 5em;
     margin: 0;
+}
+
+.dropping {
+    background: #ddd;
 }

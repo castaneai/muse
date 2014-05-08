@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 import mutagenwrapper
+import os
 import sqlite3
 import shutil
 
@@ -22,8 +23,6 @@ def read_tags(music_url):
 class MuseDB:
 
     DATA_DIR = '../data'
-    MUSIC_DIR = DATA_DIR + '/musics'
-    PICTURE_DIR = DATA_DIR + '/pictures'
 
     def __init__(self, db_url):
         self._conn = sqlite3.connect(db_url)
@@ -37,7 +36,14 @@ class MuseDB:
 
     def init(self):
         self._conn.execute(
-            u'create table musics (id integer primary key autoincrement, title string not null, artist string not null, extension string not null)'
+            u'''create table musics (
+                id integer primary key autoincrement,
+                title string not null,
+                artist string,
+                album string,
+                category string,
+                extension string not null
+            )'''
         )
 
     def search(self):
@@ -46,7 +52,14 @@ class MuseDB:
 
     def add(self, music_url):
         tags = read_tags(music_url)
-        cur = self._conn.execute(u'insert into musics values(?, ?, ?)', (None, tags['title'], tags['artist']))
+        get_ext = lambda path: os.path.splitext(path)[1].lower()
+        cur = self._conn.execute(u'insert into musics values(:id, :title, :artist, :category, :extension)', {
+            'id': None,
+            'title': tags['title'],
+            'artist': tags['artist'],
+            'category': None,
+            'extension': get_ext(music_url)
+        })
         music_id = cur.lastrowid
 
         self._copy_music(music_url, music_id)
@@ -59,3 +72,8 @@ class MuseDB:
     def _copy_picture(self, music_id, picture_bytes):
         with open('{0}/{1}'.format(self.PICTURE_DIR, music_id), 'wb') as stream:
             stream.write(picture_bytes)
+
+if __name__ == '__main__':
+    with MuseDB(MuseDB.DATA_DIR + '/muse.db') as db:
+        db.init()
+        print('muse-db init.')
