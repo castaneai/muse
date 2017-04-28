@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS musics (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title STRING NOT NULL,
+    artist STRING NOT NULL,
+    album STRING NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS artworks (
+    music_id INTEGER NOT NULL UNIQUE,
+    mime_type STRING NOT NULL,
+    data LONGBLOB
+);
+
+CREATE TABLE IF NOT EXISTS audio_data (
+    music_id INTEGER NOT NULL UNIQUE,
+    mime_type STRING NOT NULL,
+    data LONGBLOB
+);

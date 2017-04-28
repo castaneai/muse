@@ -1,26 +1,21 @@
 muse
-====
+==============
+cloud music library
 
-Web上で音楽を管理するサービス（にしたい）
-
-必要なもの
+Requirements
 -------------
-Python 2.6以上
+- Python >= 3.6
+- bottle
+- mutagen
 
-- node.js
-- bottle (pip)
-- mutagen (pip)
 
-初期化設定
+Install
 ------------
+- `python app.py`
+- http://localhost:8080/init
 
-```
-bower install
-```
-
-起動方法
------------
-
-```
-python src/server.py
-```
+API
+----------
+- `GET /musics` get musics as json
+- `GET /musics/:id` get music as json
+- `POST /musics` add music
