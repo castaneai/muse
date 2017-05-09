@@ -60,6 +60,7 @@ class Tags:
     _DEFAULT_TAGS = {
         "title": "unknown",
         "artist": "unknown",
+        "album": "unknown",
     }
 
     def __init__(self, mutagen_filetype):
@@ -68,6 +69,7 @@ class Tags:
         mutagen_tags = mutagen_filetype.tags
         self.title = self._get_tag_from_mutagen_tags(mutagen_tags, "title", self._DEFAULT_TAGS["title"])
         self.artist = self._get_tag_from_mutagen_tags(mutagen_tags, "artist", self._DEFAULT_TAGS["artist"])
+        self.album = self._get_tag_from_mutagen_tags(mutagen_tags, "album", self._DEFAULT_TAGS["artist"])
 
     @staticmethod
     def _get_tag_from_mutagen_tags(mutagen_tags, key, default_value):
