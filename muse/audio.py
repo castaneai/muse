@@ -35,6 +35,12 @@ def _mp4_cover_to_mime_type(mp4_cover):
     }.get(mp4_cover.imageformat, None)
 
 
+def _get_mime_type(mutagen_file: mutagen.FileType):
+    if len(mutagen_file.mime) > 0:
+        return mutagen_file.mime[0]
+    raise Exception("mime/type not found: " + mutagen_file.filename)
+
+
 mutagen.easyid3.EasyID3.RegisterKey("artwork", _id3tags_to_artwork)
 mutagen.easymp4.EasyMP4.RegisterKey("artwork", _mp4tags_to_artwork)
 
@@ -48,11 +54,16 @@ class Artwork:
 
 class Music:
 
-    def __init__(self, filepath):
-        # mutagenのfiletypeはファイルアクセスなどのためにとっておく
-        self._mutagen_filetype = mutagen.File(filepath, easy=True)
-        self.tags = Tags(self._mutagen_filetype)
-        self.artwork = self._mutagen_filetype["artwork"]
+    def __init__(self, file):
+        self._file = file
+        mutagen_file = mutagen.File(file, easy=True)
+        self.tags = Tags(mutagen_file)
+        self.artwork = mutagen_file["artwork"]
+        self.mime_type = _get_mime_type(mutagen_file)
+
+    @property
+    def data_bytes(self):
+        return self._file.read()
 
 
 class Tags:

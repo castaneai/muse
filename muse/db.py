@@ -14,7 +14,7 @@ class BaseModel(peewee.Model):
 
 
 class Music(BaseModel):
-    title = peewee.CharField()
+    title = peewee.CharField(unique=True)
     artist = peewee.CharField()
     album = peewee.CharField()
 
@@ -35,11 +35,14 @@ def get_musics():
     return [playhouse.shortcuts.model_to_dict(model) for model in Music.select()]
 
 
+@_db.atomic()
 def add_music(music: muse.audio.Music):
-    music_model = Music(title=music.tags.title, artist=music.tags.artist, album=music.tags.artist)
-    res = music_model.save()
-    if res and music.artwork is not None:
-        music_id = music_model.get_id()
+    music_model = Music(title=music.tags.title, artist=music.tags.artist, album=music.tags.album)
+    music_model.save()
+    music_id = music_model.get_id()
+    audio_data_model = AudioData(music_id=music_id, mime_type=music.mime_type, data=music.data_bytes)
+    audio_data_model.save()
+    if music.artwork is not None:
         add_artwork(music_id, music.artwork)
 
 
