@@ -4,15 +4,18 @@ cloud music library
 
 Requirements
 -------------
-- Python >= 3.6
-- bottle
-- mutagen
+- Python 3.6+
+- pip (see `requirements.txt`)
 
 
 Install
 ------------
-- `python app.py`
-- http://localhost:8080/init
+
+```sh
+$ pip install --require requirements.txt
+$ python muse/db.py  # initialize db
+$ python app.py  # start app
+```
 
 API
 ----------
