@@ -31,8 +31,24 @@ class AudioData(BaseModel):
     data = peewee.BlobField()
 
 
+def model_to_dict(model):
+    return playhouse.shortcuts.model_to_dict(model)
+
+
+def models_to_dicts(models):
+    return [model_to_dict(m) for m in models]
+
+
 def get_musics():
-    return [playhouse.shortcuts.model_to_dict(model) for model in Music.select()]
+    return Music.select()
+
+
+def get_artwork(music_id) -> Artwork:
+    return Artwork.get(Artwork.music_id == music_id)
+
+
+def get_audio_data(music_id) -> AudioData:
+    return AudioData.get(AudioData.music_id == music_id)
 
 
 @_db.atomic()
@@ -44,6 +60,28 @@ def add_music(music: muse.audio.Music):
     audio_data_model.save()
     if music.artwork is not None:
         add_artwork(music_id, music.artwork)
+
+    return music_model
+
+
+@_db.atomic()
+def delete_music(music_id):
+    music = Music.get(Music.id == music_id)
+    music.delete_instance()
+
+    try:
+        artwork = Artwork.get(music_id == music_id)
+        artwork.delete_instance()
+    except Artwork.DoesNotExist:
+        pass
+
+    try:
+        audio_data = AudioData.get(music_id == music_id)
+        audio_data.delete_instance()
+    except AudioData.DoesNotExist:
+        pass
+
+    return music
 
 
 def add_artwork(music_id: int, artwork: muse.audio.Artwork):
