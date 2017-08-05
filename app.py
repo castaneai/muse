@@ -31,7 +31,9 @@ def get_musics():
     # todo: json responseはdecoratorにしたい
     bottle.response.content_type = 'application/json'
     musics = muse.db.get_musics()
-    return json.dumps(muse.db.models_to_dicts(musics))
+    return json.dumps(
+        [muse.db.music_model_to_dict(music) for music in musics]
+    )
 
 
 @app.post('/musics')
