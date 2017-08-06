@@ -12,9 +12,17 @@ Install
 ------------
 
 ```sh
+$ cd muse
+$ chmod +w data temp
 $ pip install --require requirements.txt
 $ python muse/db.py  # initialize db
-$ python app.py  # start app
+```
+
+Run app
+--------------
+
+```sh
+$ python app.py
 ```
 
 API

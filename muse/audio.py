@@ -55,12 +55,15 @@ class Artwork:
 class Music:
 
     def __init__(self, file):
-        self.data_bytes = file.read()
-        file.seek(0)
         mutagen_file = mutagen.File(file, easy=True)
         self.tags = Tags(mutagen_file)
         self.artwork = mutagen_file["artwork"]
         self.mime_type = _get_mime_type(mutagen_file)
+        if isinstance(file, (str, bytes, int)):
+            file = open(file, 'rb')
+        with file:
+            file.seek(0)
+            self.data_bytes = file.read()
 
 
 class Tags:

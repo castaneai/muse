@@ -1,10 +1,29 @@
-import io
+import os
 import bottle
-import fdsend
 from typing import List
 import muse.audio
 import muse.db
 import muse.dict
+import muse.config
+
+
+# DBのBLOBに埋め込んだバイナリをファイルキャッシュとして保存してからHTTP responseにする（ファイルにしたほうがストリーミングなどがしやすいから）
+def static_cache_file(filename, mime_type, file_content_func: callable):
+    if not os.path.exists(filename):
+        with open(filename, 'wb') as f:
+            f.write(file_content_func())
+    return bottle.static_file(filename, root='.', mimetype=mime_type)
+
+
+def artwork_static_cache_file(artwork: muse.db.Artwork):
+    filename = '{}/muse_artwork_cache_{}'.format(muse.config.TEMP_FILE_DIR, artwork.music_id)
+    return static_cache_file(filename, artwork.mime_type, lambda: artwork.data)
+
+
+def audio_data_static_cache_file(audio_data: muse.db.AudioData):
+    filename = '{}/muse_audio_data_cache_{}'.format(muse.config.TEMP_FILE_DIR, audio_data.music_id)
+    return static_cache_file(filename, audio_data.mime_type, lambda: audio_data.data)
+
 
 app = bottle.Bottle()
 
@@ -54,16 +73,13 @@ def delete_music(music_id):
 @app.get('/artworks/<music_id>')
 def get_music_artwork(music_id):
     artwork = muse.db.get_artwork(music_id)
-    # todo: error handling
-    buffer = io.BytesIO(artwork.data)
-    return fdsend.send_file(buffer, ctype=artwork.mime_type)
+    return artwork_static_cache_file(artwork)
 
 
 @app.get('/audio-data/<music_id>')
 def get_music_stream(music_id):
     audio_data = muse.db.get_audio_data(music_id)
-    buffer = io.BytesIO(audio_data.data)
-    return fdsend.send_file(buffer, ctype=audio_data.mime_type)
+    return audio_data_static_cache_file(audio_data)
 
 
 def is_valid_upload_file(upload_file):

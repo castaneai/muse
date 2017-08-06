@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-import os
 import muse.audio
+import muse.config
 import peewee
 
-DB_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data/muse.db"))
-_db = peewee.SqliteDatabase(DB_DIR)
+_db = peewee.SqliteDatabase(muse.config.DB_FILE_PATH)
 
 
 class BaseModel(peewee.Model):
@@ -19,13 +18,13 @@ class Music(BaseModel):
 
 
 class Artwork(BaseModel):
-    music_id = peewee.ForeignKeyField(Music, related_name='artwork')
+    music = peewee.ForeignKeyField(Music, related_name='artwork')
     mime_type = peewee.CharField()
     data = peewee.BlobField()
 
 
 class AudioData(BaseModel):
-    music_id = peewee.ForeignKeyField(Music, related_name='audio_data')
+    music = peewee.ForeignKeyField(Music, related_name='audio_data')
     mime_type = peewee.CharField()
     data = peewee.BlobField()
 

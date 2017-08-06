@@ -1,3 +1,6 @@
 .idea/
 *.pyc
-data/muse.db
+data/*
+!data/.gitkeep
+temp/*
+!temp/.gitkeep
