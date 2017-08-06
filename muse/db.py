@@ -2,7 +2,6 @@
 import os
 import muse.audio
 import peewee
-import playhouse.shortcuts
 
 DB_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data/muse.db"))
 _db = peewee.SqliteDatabase(DB_DIR)
@@ -29,24 +28,6 @@ class AudioData(BaseModel):
     music_id = peewee.ForeignKeyField(Music, related_name='audio_data')
     mime_type = peewee.CharField()
     data = peewee.BlobField()
-
-
-def model_to_dict(model):
-    return playhouse.shortcuts.model_to_dict(model)
-
-
-# この関数は db の関心事からずれてるので、app.py側にうつすべき
-def music_model_to_dict(music_model: Music) -> dict:
-    HOST = 'http://localhost:8080'
-    dic = model_to_dict(music_model)
-    # todo: 無理やり感がある
-    dic['artworkUrl'] = HOST + '/artworks/{0}'.format(music_model.id)
-    dic['audioDataUrl'] = HOST + '/audio-data/{0}'.format(music_model.id)
-    return dic
-
-
-def models_to_dicts(models):
-    return [model_to_dict(m) for m in models]
 
 
 def get_musics():

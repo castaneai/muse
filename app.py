@@ -1,10 +1,10 @@
 import io
-import json
 import bottle
 import fdsend
 from typing import List
 import muse.audio
 import muse.db
+import muse.dict
 
 app = bottle.Bottle()
 
@@ -28,12 +28,8 @@ def test_upload():
 
 @app.get("/musics")
 def get_musics():
-    # todo: json responseはdecoratorにしたい
-    bottle.response.content_type = 'application/json'
     musics = muse.db.get_musics()
-    return json.dumps(
-        [muse.db.music_model_to_dict(music) for music in musics]
-    )
+    return muse.dict.musics_to_dict(musics)
 
 
 @app.post('/musics')
@@ -46,13 +42,13 @@ def upload_musics():
         music = muse.audio.Music(upload_file.file)
         saved_music_models.append(muse.db.add_music(music))
 
-    return json.dumps(muse.db.models_to_dicts(saved_music_models))
+    return muse.dict.musics_to_dict(saved_music_models)
 
 
 @app.delete('/musics/<music_id>')
 def delete_music(music_id):
     deleted_music = muse.db.delete_music(music_id)
-    return json.dumps(muse.db.model_to_dict(deleted_music))
+    return muse.dict.music_to_dict(deleted_music)
 
 
 @app.get('/artworks/<music_id>')
