@@ -90,4 +90,4 @@ def is_valid_upload_file(upload_file):
     return True  # todo: ちゃんとする
 
 
-app.run(host="localhost", port=8080, debug=True)
+app.run(server='tornado', host="localhost", port=8080, debug=True)
